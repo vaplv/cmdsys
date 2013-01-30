@@ -1,10 +1,10 @@
 GENERAL NOTES
 
-This C99 library manages a set of user defined GNU style commands. This command
-system controls the definition and the parsing of registered commands while its
-effective action is performed through an user defined callback attached to the
-command. Multi syntax command as well as the completion of command argument are
-also supported.
+This C99 library manages a set of user defined GNU style commands. The command
+system controls the definition and the parsing of registered commands. Multi
+syntax as well as completion of command arguments are supported. The effective
+action of a command is performed by a callback invoked during command execution
+after the completion of command parsing.
 
 LICENSES
 
