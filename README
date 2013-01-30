@@ -1,0 +1,13 @@
+GENERAL NOTES
+
+This C99 library manages a set of user defined GNU style commands. This command
+system controls the definition and the parsing of registered commands while its
+effective action is performed through an user defined callback attached to the
+command. Multi syntax command as well as the completion of command argument are
+also supported.
+
+LICENSES
+
+This library is released under the BSD license. The parsing of commands is
+performed by the argtable2 library released under the LGPL-2 license
+(http://argtable.sourceforge.net/)
