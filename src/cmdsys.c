@@ -1133,3 +1133,23 @@ exit:
 error:
   goto exit;
 }
+
+enum cmdsys_error
+cmdsys_get_error_string(const struct cmdsys* sys, const char** error)
+{
+  if(!sys || !error)
+    return CMDSYS_INVALID_ARGUMENT;
+  *error = sys->errbuf.buffer_id == 0 ? NULL : sys->errbuf.buffer;
+  return CMDSYS_NO_ERROR;
+}
+
+enum cmdsys_error
+cmdsys_flush_error(struct cmdsys* sys)
+{
+  if(!sys)
+    return CMDSYS_INVALID_ARGUMENT;
+  sys->errbuf.buffer_id = 0;
+  sys->errbuf.buffer[0] = '\0';
+  return CMDSYS_NO_ERROR;
+}
+

@@ -242,5 +242,14 @@ cmdsys_command_name_completion
    size_t* completion_list_len,
    const char** completion_list[]);
 
+CMDSYS_API enum cmdsys_error 
+cmdsys_get_error_string
+  (const struct cmdsys* sys,
+   const char** error);
+
+CMDSYS_API enum cmdsys_error
+cmdsys_flush_error
+  (struct cmdsys* sys);
+
 #endif /* CMDSYS_H */
 

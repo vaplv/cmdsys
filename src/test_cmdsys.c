@@ -437,6 +437,7 @@ main(int argc, char **argv)
   char buf[16] = { [0] = '\0' };
   struct cmdsys* sys = NULL;
   const char** lst = NULL;
+  const char* err_str = NULL;
   size_t len = 0;
   bool b = false;
 
@@ -463,10 +464,25 @@ main(int argc, char **argv)
      NULL),
     OK);
 
+  CHECK(cmdsys_get_error_string(NULL, NULL), BAD_ARG);
+  CHECK(cmdsys_get_error_string(sys, NULL), BAD_ARG);
+  CHECK(cmdsys_get_error_string(NULL, &err_str), BAD_ARG);
+  CHECK(cmdsys_get_error_string(sys, &err_str), OK);
+  CHECK(err_str, NULL);
+
   CHECK(cmdsys_execute_command(NULL, NULL, NULL), BAD_ARG);
   CHECK(cmdsys_execute_command(sys, NULL, NULL), BAD_ARG);
   CHECK(cmdsys_execute_command(NULL, "__foox", NULL), BAD_ARG);
   CHECK(cmdsys_execute_command(sys, "__foox", NULL), CMD_ERR);
+
+  CHECK(cmdsys_get_error_string(sys, &err_str), OK);
+  NCHECK(err_str, NULL);
+  printf("%s", err_str);
+  CHECK(cmdsys_flush_error(NULL), BAD_ARG);
+  CHECK(cmdsys_flush_error(sys), OK);
+  CHECK(cmdsys_get_error_string(sys, &err_str), OK);
+  CHECK(err_str, NULL);
+
   CHECK(cmdsys_execute_command(sys, "__foo", NULL), OK);
   CHECK(cmdsys_execute_command(sys, "__foo -v", NULL), OK);
 
@@ -476,6 +492,9 @@ main(int argc, char **argv)
   CHECK(cmdsys_del_command(sys, "__foox"), BAD_ARG);
   CHECK(cmdsys_del_command(sys, "__foo"), OK);
   CHECK(cmdsys_execute_command(sys, "__foo", NULL), CMD_ERR);
+  CHECK(cmdsys_get_error_string(sys, &err_str), OK);
+  printf("%s", err_str);
+  CHECK(cmdsys_flush_error(sys), OK);
 
   CHECK(cmdsys_add_command
     (sys, "__foo", foo, NULL, NULL,
@@ -491,6 +510,9 @@ main(int argc, char **argv)
   CHECK(cmdsys_execute_command(sys, "__foo --verb", NULL), OK);
   CHECK(cmdsys_execute_command(sys, "__foo -vV", NULL), CMD_ERR);
   CHECK(cmdsys_del_command(sys, "__foo"), OK);
+  CHECK(cmdsys_get_error_string(sys, &err_str), OK);
+  printf("%s", err_str);
+  CHECK(cmdsys_flush_error(sys), OK);
 
   CHECK(cmdsys_add_command
     (sys, "__load", load, NULL, NULL,
