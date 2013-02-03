@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000 Vincent Forest
+ * Copyright (c) 2013 Vincent Forest
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -44,8 +44,6 @@
 #else
 # define CMDSYS(func) cmdsys_##func
 #endif /* NDEBUG */
-
-#define C
 
 struct cmdsys;
 struct mem_allocator;
@@ -172,6 +170,10 @@ struct cmdarg {
  * Command function prototypes.
  *
  ******************************************************************************/
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 CMDSYS_API enum cmdsys_error
 cmdsys_create
   (struct mem_allocator* allocator, /* May be NULL */
@@ -242,7 +244,7 @@ cmdsys_command_name_completion
    size_t* completion_list_len,
    const char** completion_list[]);
 
-CMDSYS_API enum cmdsys_error 
+CMDSYS_API enum cmdsys_error
 cmdsys_get_error_string
   (const struct cmdsys* sys,
    const char** error);
@@ -250,6 +252,10 @@ cmdsys_get_error_string
 CMDSYS_API enum cmdsys_error
 cmdsys_flush_error
   (struct cmdsys* sys);
+
+#ifdef __cplusplus
+} /* extern "C" */
+#endif
 
 #endif /* CMDSYS_H */
 
