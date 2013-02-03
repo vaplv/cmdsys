@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000 Vincent Forest
+ * Copyright (c) 2013 Vincent Forest
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
