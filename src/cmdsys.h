@@ -27,7 +27,7 @@
 #ifndef CMDSYS_H
 #define CMDSYS_H
 
-#include "sys/sys.h"
+#include <sys/sys.h>
 #include <stdbool.h>
 #include <stddef.h>
 

@@ -25,8 +25,8 @@
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 #include "cmdsys.h"
-#include "sys/mem_allocator.h"
-#include "sys/sys.h"
+#include <sys/mem_allocator.h>
+#include <sys/sys.h>
 #include <float.h>
 #include <limits.h>
 #include <stdio.h>

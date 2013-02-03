@@ -24,15 +24,18 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-#include "stdlib/sl_flat_set.h"
-#include "stdlib/sl_hash_table.h"
-#include "stdlib/sl_string.h"
-#include "sys/list.h"
-#include "sys/math.h"
-#include "sys/mem_allocator.h"
-#include "sys/ref_count.h"
-#include "sys/sys.h"
 #include "cmdsys.h"
+
+#include <sl/sl_flat_set.h>
+#include <sl/sl_hash_table.h>
+#include <sl/sl_string.h>
+
+#include <sys/list.h>
+#include <sys/math.h>
+#include <sys/mem_allocator.h>
+#include <sys/ref_count.h>
+#include <sys/sys.h>
+
 #include <argtable2.h>
 #include <limits.h>
 #include <stdarg.h>
@@ -356,7 +359,7 @@ setup_cmd_arg(struct cmdsys* sys, struct cmd* cmd, const char* name)
                 cmd->argv[arg_id]->value_list[val_id].data.string = str;
               } else {
                 errbuf_print
-                  (&sys->errbuf, 
+                  (&sys->errbuf,
                    "%s: unexpected option value `%s'\n",
                    name, str);
                 err = CMDSYS_COMMAND_ERROR;
