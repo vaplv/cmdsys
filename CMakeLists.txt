@@ -1,14 +1,10 @@
-cmake_minimum_required(VERSION 2.8)
+cmake_minimum_required(VERSION 2.6)
 project(cmdsys C)
 enable_testing()
 
 if(NOT CMAKE_COMPILER_IS_GNUCC)
   message(FATAL_ERROR "Unsupported compiler.")
 endif(NOT CMAKE_COMPILER_IS_GNUCC)
-
-if( NOT DEFINED CMAKE_BUILD_TYPE )
-  set(CMAKE_BUILD_TYPE CACHE Release STRING "ekjzkejzkejze" FORCE)
-endif()
 
 set(CMAKE_C_FLAGS "-pedantic -std=c99 -Wall -Wextra -Wcast-align -Wmissing-declarations -Wmissing-prototypes -fvisibility=hidden -Wl,-z,defs")
 set(CMAKE_C_FLAGS_DEBUG "-g -DDEBUG")
