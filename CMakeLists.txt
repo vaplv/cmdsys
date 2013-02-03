@@ -28,7 +28,7 @@ endmacro()
 
 check_dependency(argtable2 argtable2.h)
 check_dependency(sys sys/sys.h)
-check_dependency(sl stdlib/sl.h)
+check_dependency(sl sl/sl.h)
 
 ################################################################################
 # Define targets
@@ -44,8 +44,6 @@ add_test(test_cmdsys test_cmdsys)
 ################################################################################
 # Define output & install directories 
 ################################################################################
-set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${cmdsys_BINARY_DIR}/lib)
-
 install(TARGETS cmdsys LIBRARY DESTINATION lib)
 install(FILES src/cmdsys.h DESTINATION include)
 
