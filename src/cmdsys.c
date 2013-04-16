@@ -83,7 +83,7 @@ errbuf_print(struct errbuf* buf, const char* fmt, ...)
     buf->buffer_id = buf_size;
     buf->buffer[buf_size - 1] = '\0';
   } else {
-    buf->buffer_id += i;
+    buf->buffer_id += (size_t)i;
   }
 
   va_end(vargs_list);
@@ -170,11 +170,11 @@ init_domain_and_table(struct cmd* cmd, const struct cmdarg_desc argv_desc[])
     #define ARGN(suffix, a)                                                    \
       CONCAT(CONCAT(arg_, suffix), n)                                          \
         ((a).short_options, (a).long_options, (a).data_type,                   \
-         (a).min_count, (a).max_count, (a).glossary)
+         (int)(a).min_count, (int)(a).max_count, (a).glossary)
     #define LITN(suffix, a)                                                    \
       CONCAT(CONCAT(arg_, suffix), n)                                          \
-        ((a).short_options, (a).long_options, (a).min_count,                   \
-         (a).max_count, (a).glossary)
+        ((a).short_options, (a).long_options, (int)(a).min_count,              \
+         (int)(a).max_count, (a).glossary)
 
     for(i = 0; !IS_END_REACHED(argv_desc[i]); ++i) {
      if(argv_desc[i].min_count == 0 && argv_desc[i].max_count == 1) {
@@ -361,7 +361,7 @@ setup_cmd_arg(struct cmdsys* sys, struct cmd* cmd, const char* name)
         case CMDARG_FLOAT:
           isdef = val_id < ((struct arg_dbl*)cmd->arg_table[arg_tbl_id])->count;
           if(isdef) {
-            cmd->argv[arg_id]->value_list[val_id].data.real = MAX(MIN(
+            cmd->argv[arg_id]->value_list[val_id].data.real = MAX(MIN((float)
               ((struct arg_dbl*)(cmd->arg_table[arg_tbl_id]))->dval[val_id],
               cmd->arg_domain[arg_id].real.max),
               cmd->arg_domain[arg_id].real.min);
@@ -633,7 +633,7 @@ cmdsys_add_command
         err = CMDSYS_INVALID_ARGUMENT;
         goto error;
       }
-      buffer_len += argv_desc[argc].max_count;
+      buffer_len += (size_t)argv_desc[argc].max_count;
     }
   }
   ++argc; /* +1 <=> command name. */
@@ -677,13 +677,13 @@ cmdsys_add_command
     cmd->argv[arg_id] = MEM_CALLOC
       (sys->allocator, 1,
        sizeof(struct cmdarg)
-       + argv_desc[desc_id].max_count * sizeof(struct cmdarg_value));
+       + (size_t)argv_desc[desc_id].max_count * sizeof(struct cmdarg_value));
     if(NULL == cmd->argv[arg_id]) {
       err = CMDSYS_MEMORY_ERROR;
       goto error;
     }
     cmd->argv[arg_id]->type = argv_desc[desc_id].type;
-    cmd->argv[arg_id]->count = argv_desc[desc_id].max_count;
+    cmd->argv[arg_id]->count = (size_t)argv_desc[desc_id].max_count;
   }
   cmd->argc = argc;
 
@@ -813,7 +813,7 @@ cmdsys_execute_command
   struct cmd* valid_cmd = NULL;
   char* name = NULL;
   char* ptr = NULL;
-  size_t argc = 0;
+  int argc = 0;
   enum cmdsys_error err = CMDSYS_NO_ERROR;
   int min_nerror = 0;
 
@@ -950,7 +950,7 @@ cmdsys_man_command
   }
 
   if(len)
-    *len = fpos / sizeof(char);
+    *len = (size_t)fpos / sizeof(char);
   if(buffer && max_buf_len) {
     const size_t size = MIN((max_buf_len - 1) * sizeof(char), (size_t)fpos);
     size_t nb = 0;
@@ -1011,7 +1011,7 @@ cmdsys_command_arg_completion
     } else {
       struct cmd* valid_cmd = NULL;
       struct list_node* node = NULL;
-      size_t nb_valid_cmd = 0;
+      int nb_valid_cmd = 0;
       int min_nerror = INT_MAX;
       int max_ndefargs = INT_MIN;
 
@@ -1021,7 +1021,7 @@ cmdsys_command_arg_completion
 
         cmd = CONTAINER_OF(node, struct cmd, node);
         set_optvalue_flag(cmd, true);
-        nerror = arg_parse(hint_argc, hint_argv, cmd->arg_table);
+        nerror = arg_parse((int)hint_argc, hint_argv, cmd->arg_table);
         ndefargs = defined_args_count(cmd);
 
         /* Define as the completion function the one defined by the command
@@ -1100,7 +1100,7 @@ cmdsys_command_name_completion
     buf[cmd_name_len + 1] = '\0';
     SL(flat_set_upper_bound(sys->name_set, &ptr, &end));
     *completion_list = name_list + begin;
-    *completion_list_len = (name_list + end) - (*completion_list);
+    *completion_list_len = (size_t)((name_list + end) - (*completion_list));
     if(0 == *completion_list_len)
       *completion_list = NULL;
     #undef CHARBUF_SIZE
