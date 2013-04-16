@@ -30,13 +30,18 @@ endmacro()
 
 check_dependency(argtable2 argtable2.h)
 check_dependency(snlsys snlsys/snlsys.h)
+check_dependency(snlsys-dbg snlsys/snlsys.h)
 check_dependency(sl sl/sl.h)
+check_dependency(sl-dbg sl/sl.h)
 
 ################################################################################
 # Define targets
 ################################################################################
 add_library(cmdsys SHARED cmdsys.c cmdsys.h)
-target_link_libraries(cmdsys ${sl_LIBRARY} argtable2 ${snlsys_LIBRARY})
+target_link_libraries(cmdsys argtable2)
+target_link_libraries(cmdsys debug ${sl-dbg_LIBRARY} ${snlsys-dbg_LIBRARY})
+target_link_libraries(cmdsys optimized  ${sl_LIBRARY} ${snlsys_LIBRARY})
+
 set_target_properties(cmdsys PROPERTIES DEFINE_SYMBOL CMDSYS_SHARED_BUILD)
 
 add_executable(test_cmdsys test_cmdsys.c)

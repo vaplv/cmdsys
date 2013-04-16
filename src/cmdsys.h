@@ -52,8 +52,8 @@ struct cmdarg_desc {
   const char* long_options;
   const char* data_type;
   const char* glossary;
-  int min_count;
-  int max_count;
+  unsigned int min_count;
+  unsigned int max_count;
   union cmdarg_domain {
     struct { int min, max; } integer;
     struct { float min, max; } real;
